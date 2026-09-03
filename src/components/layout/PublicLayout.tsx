@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Shield, Menu, X, ArrowRight, Sparkles } from 'lucide-react';
+import { Shield, Menu, X, ArrowRight, Sparkles, Smartphone, Download, QrCode, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 export default function PublicLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   const location = useLocation();
 
   return (
@@ -70,6 +71,15 @@ export default function PublicLayout() {
 
           {/* Action CTAs (Desktop) */}
           <div className="hidden md:flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setDownloadModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-bold text-[#055926] hover:text-[#033416] bg-[#f0f7f2] hover:bg-[#e3efe5] border border-[#dceed2] rounded-xl transition-all active:scale-95 shadow-xs"
+              id="nav-download-app-btn"
+            >
+              <Smartphone className="h-4 w-4 text-[#055926]" />
+              <span>Download APP</span>
+            </button>
             <Link to="/login">
               <Button variant="ghost" className="text-sm font-semibold text-[#1F2937] hover:bg-black/5">
                 Log in
@@ -84,10 +94,19 @@ export default function PublicLayout() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setDownloadModalOpen(true)}
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-[#055926] rounded-lg border border-[#055926]/30 bg-[#f0f7f2] active:scale-95 transition-all"
+              id="mobile-download-app-btn"
+            >
+              <Smartphone className="h-3.5 w-3.5" />
+              <span>Download APP</span>
+            </button>
             <Link to="/login">
               <button 
                 type="button" 
-                className="px-3 py-1.5 text-xs font-semibold text-[#055926] rounded-lg border border-[#055926]/30 bg-[#f0f7f2]"
+                className="px-3 py-1.5 text-xs font-semibold text-[#1F2937] rounded-lg border border-[#EAE8DF] bg-white"
               >
                 Log In
               </button>
@@ -135,6 +154,17 @@ export default function PublicLayout() {
             </div>
             
             <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setDownloadModalOpen(true);
+                }}
+                className="w-full flex items-center justify-center gap-2 rounded-xl py-3 px-4 text-sm font-bold text-[#055926] bg-[#f0f7f2] border border-[#dceed2] hover:bg-[#e4f1e7]"
+              >
+                <Smartphone className="h-4 w-4" />
+                <span>Download APP (Android & iOS)</span>
+              </button>
               <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="w-full">
                 <Button className="w-full justify-center text-sm font-bold py-3 shadow-md">
                   Create Free Account
@@ -214,6 +244,141 @@ export default function PublicLayout() {
           </div>
         </div>
       </footer>
+
+      {/* ================= DOWNLOAD APP MODAL ================= */}
+      {downloadModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div 
+            className="relative w-full max-w-lg rounded-3xl border border-[#EAE8DF] bg-white p-6 sm:p-8 shadow-2xl animate-in zoom-in-95 duration-200"
+            role="dialog"
+            aria-modal="true"
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setDownloadModalOpen(false)}
+              className="absolute right-5 top-5 rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              aria-label="Close modal"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#055926] shadow-sm">
+                <Smartphone className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-[#fcf9ee] border border-[#D4A72C]/40 px-2.5 py-0.5 text-[10px] font-bold text-[#986d15] mb-0.5">
+                  <Sparkles className="h-3 w-3 text-[#D4A72C]" />
+                  <span>Field Agent & Manager Edition</span>
+                </div>
+                <h3 className="text-xl font-black text-[#172018] tracking-tight">
+                  Download AJOMI Mobile APP
+                </h3>
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-[#586359] leading-relaxed mb-6">
+              Record daily contributions on the street even without an active internet connection. Pair bluetooth thermal printers for physical receipts and send instant SMS alerts.
+            </p>
+
+            {/* Download Options */}
+            <div className="space-y-3 mb-6">
+              {/* Option 1: Direct Android APK */}
+              <a 
+                href="#download-apk" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('Starting AJOMI Field Collector v2.4.1 APK download (14.8 MB)...');
+                }}
+                className="group flex items-center justify-between rounded-2xl border-2 border-[#055926] bg-[#f0f7f2] p-4 transition-all hover:bg-[#e3f0e6] hover:shadow-md"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#055926] text-white">
+                    <Download className="h-5 w-5" />
+                  </div>
+                  <div className="text-left">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-black text-[#055926]">Download Android APK</span>
+                      <span className="rounded-full bg-[#055926] px-2 py-0.5 text-[10px] font-bold text-white">v2.4.1</span>
+                    </div>
+                    <p className="text-xs text-[#586359]">Direct APK install for any Android phone / POS (14.8 MB)</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-5 w-5 text-[#055926] group-hover:translate-x-1 transition-transform" />
+              </a>
+
+              {/* Option 2: Google Play Store */}
+              <div className="flex items-center justify-between rounded-2xl border border-[#EAE8DF] bg-[#FAFAF7] p-4 text-left">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-[#EAE8DF] text-[#172018]">
+                    <Smartphone className="h-5 w-5 text-gray-700" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-bold text-[#172018]">Google Play Store</span>
+                    <p className="text-xs text-[#586359]">Official release on Android Play Store</p>
+                  </div>
+                </div>
+                <span className="rounded-full bg-emerald-100 text-emerald-800 px-2.5 py-1 text-[11px] font-bold">
+                  Verified
+                </span>
+              </div>
+
+              {/* Option 3: iOS Web App / PWA */}
+              <div className="flex items-center justify-between rounded-2xl border border-[#EAE8DF] bg-[#FAFAF7] p-4 text-left">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-[#EAE8DF] text-[#172018]">
+                    <QrCode className="h-5 w-5 text-gray-700" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-bold text-[#172018]">Apple iOS (iPhone / iPad)</span>
+                    <p className="text-xs text-[#586359]">Open in Safari & tap "Add to Home Screen"</p>
+                  </div>
+                </div>
+                <span className="rounded-full bg-gray-100 text-gray-700 px-2.5 py-1 text-[11px] font-bold">
+                  Instant PWA
+                </span>
+              </div>
+            </div>
+
+            {/* Key Capabilities */}
+            <div className="rounded-2xl bg-[#FAFAF7] border border-[#EAE8DF] p-4">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-[#586359] mb-2.5">
+                Included in Mobile Application
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-xs text-[#172018]">
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#055926] shrink-0" />
+                  <span>100% Offline Collections</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#055926] shrink-0" />
+                  <span>Bluetooth POS Printers</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#055926] shrink-0" />
+                  <span>Biometric Fingerprint Login</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#055926] shrink-0" />
+                  <span>Auto SMS to Savers</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex items-center justify-end">
+              <Button 
+                variant="outline" 
+                onClick={() => setDownloadModalOpen(false)}
+                className="rounded-xl border-[#EAE8DF] text-xs font-semibold px-5"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
