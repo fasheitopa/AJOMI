@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, Tenant } from '../types';
+import { User, Tenant, Role } from '../types';
 
 interface AuthContextType {
   user: User | null;
   tenant: Tenant | null;
-  login: (email: string) => void;
+  login: (email: string, options?: { name?: string; role?: Role; accountType?: 'TENANT_COLLECTOR' | 'CONTRIBUTOR'; phone?: string }) => void;
   logout: () => void;
   updateTenant: (tenant: Partial<Tenant>) => void;
   isAuthenticated: boolean;
@@ -24,19 +24,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedTenant) setTenant(JSON.parse(storedTenant));
   }, []);
 
-  const login = (email: string) => {
-    // Mock login that creates a tenant owner
+  const login = (
+    email: string, 
+    options?: { name?: string; role?: Role; accountType?: 'TENANT_COLLECTOR' | 'CONTRIBUTOR'; phone?: string }
+  ) => {
+    const role: Role = options?.role || (options?.accountType === 'CONTRIBUTOR' ? 'CONTRIBUTOR' : 'TENANT_OWNER');
+    const name = options?.name || email.split('@')[0];
+
     const mockUser: User = {
-      id: 'usr_123',
+      id: `usr_${Date.now()}`,
       email,
-      name: email.split('@')[0],
-      role: 'TENANT_OWNER',
-      tenant_id: 'tnt_123',
+      name,
+      phone: options?.phone,
+      role,
+      account_type: options?.accountType || (role === 'CONTRIBUTOR' ? 'CONTRIBUTOR' : 'TENANT_COLLECTOR'),
+      tenant_id: role === 'CONTRIBUTOR' ? undefined : 'tnt_123',
     };
     
-    // Only set tenant if they have completed onboarding (simulated by checking if tenant exists)
-    // For demo, we'll pretend they don't have a tenant yet so they go to onboarding,
-    // UNLESS they already have one in local storage.
     const storedTenant = localStorage.getItem('ajomi_tenant');
     
     setUser(mockUser);

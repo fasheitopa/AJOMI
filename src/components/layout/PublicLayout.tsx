@@ -2,23 +2,20 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Shield, Menu, X, ArrowRight, Sparkles, Smartphone, Download, QrCode, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { RegisterModal } from '../auth/RegisterModal';
 
 export default function PublicLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const location = useLocation();
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FAFAF7] text-[#172018] antialiased selection:bg-[#055926]/20 selection:text-[#055926]">
       {/* Top Banner / Announcement on mobile/web */}
-      <div className="bg-[#1F2937] text-white py-2 px-4 text-center text-xs font-medium flex items-center justify-center gap-2">
-        <span className="flex h-2 w-2 rounded-full bg-[#D4A72C] animate-pulse" />
-        <span>Nigeria's premier digital Ajo & Esusu management system</span>
-        <span className="hidden sm:inline text-gray-400">|</span>
-        <Link to="/pricing" className="hidden sm:inline-flex items-center gap-1 text-[#D4A72C] font-semibold hover:underline">
-          <span>See live pricing</span>
-          <ArrowRight className="h-3 w-3" />
-        </Link>
+      <div className="bg-[#1F2937] text-white py-2 px-4 text-center text-xs font-medium flex items-center justify-center gap-2 flex-wrap">
+        <span className="flex h-2 w-2 rounded-full bg-[#D4A72C] animate-pulse shrink-0" />
+        <span>Africa's premier digital contribution (Ajo, Susu, chama. Esusu, Chilimba, Adashe) management system</span>
       </div>
 
       {/* Main Header Bar */}
@@ -85,11 +82,13 @@ export default function PublicLayout() {
                 Log in
               </Button>
             </Link>
-            <Link to="/register">
-              <Button className="text-sm font-bold shadow-md shadow-[#055926]/20">
-                Get Started Free
-              </Button>
-            </Link>
+            <Button 
+              onClick={() => setRegisterModalOpen(true)}
+              className="text-sm font-bold shadow-md shadow-[#055926]/20"
+              id="nav-get-started-btn"
+            >
+              Get Started Free
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -165,11 +164,16 @@ export default function PublicLayout() {
                 <Smartphone className="h-4 w-4" />
                 <span>Download APP (Android & iOS)</span>
               </button>
-              <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="w-full">
-                <Button className="w-full justify-center text-sm font-bold py-3 shadow-md">
-                  Create Free Account
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setRegisterModalOpen(true);
+                }} 
+                className="w-full justify-center text-sm font-bold py-3 shadow-md"
+                id="mobile-get-started-btn"
+              >
+                Create Free Account
+              </Button>
               <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full">
                 <Button variant="outline" className="w-full justify-center text-sm font-medium py-3 border-[#EAE8DF]">
                   Log In to Business
@@ -379,6 +383,12 @@ export default function PublicLayout() {
           </div>
         </div>
       )}
+
+      {/* Registration Modal */}
+      <RegisterModal 
+        isOpen={registerModalOpen} 
+        onClose={() => setRegisterModalOpen(false)} 
+      />
     </div>
   );
 }

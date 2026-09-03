@@ -1,9 +1,19 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
-import { Users, PieChart, ShieldCheck, ArrowRight, Sparkles, Smartphone, CheckCircle, Wallet } from 'lucide-react';
+import { Users, PieChart, ShieldCheck, ArrowRight, Sparkles, Smartphone } from 'lucide-react';
 import { PricingCards } from '../../components/pricing/PricingCards';
+import { RegisterModal } from '../../components/auth/RegisterModal';
 
 export default function LandingPage() {
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | undefined>(undefined);
+
+  const handleOpenRegister = (plan?: string) => {
+    setSelectedPlan(plan);
+    setRegisterModalOpen(true);
+  };
+
   return (
     <div className="flex flex-col bg-[#FAFAF7] text-[#172018]">
       {/* ================= Hero Section ================= */}
@@ -22,23 +32,27 @@ export default function LandingPage() {
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg text-[#4B5563] leading-relaxed">
-            AJOMI helps Ajo, Esusu, thrift collectors, and cooperative managers automate daily contributions, record deposits, assign field agents, and track payouts from one secure platform.
+            AJOMI helps Ajo, Esusu, thrift collectors, cooperative managers and contributors automate daily/weekly and monthly contributions, record deposits, assign field agents, and track contributions and payouts from one secured platform.
           </p>
 
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
-            <Link to="/register" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto text-base font-bold shadow-lg shadow-[#055926]/20">
-                Start Free Trial
-              </Button>
-            </Link>
-            <Link to="/pricing" className="w-full sm:w-auto">
+            <Button 
+              size="lg" 
+              onClick={() => handleOpenRegister()}
+              className="w-full sm:w-auto text-base font-bold shadow-lg shadow-[#055926]/20"
+              id="hero-start-free-trial-btn"
+            >
+              Start Free Trial
+            </Button>
+            <a href="#how-it-works" className="w-full sm:w-auto">
               <button 
                 type="button" 
-                className="w-full sm:w-auto rounded-2xl border-2 border-[#1F2937] py-3 px-6 text-sm font-bold text-[#1F2937] hover:bg-[#1F2937] hover:text-white transition-all"
+                className="w-full sm:w-auto rounded-2xl border-2 border-[#1F2937] py-3 px-6 text-sm font-bold text-[#1F2937] hover:bg-[#1F2937] hover:text-white transition-all capitalize"
+                id="hero-how-it-works-btn"
               >
-                View Plans & Calculator
+                how it works
               </button>
-            </Link>
+            </a>
           </div>
 
           {/* Quick trust metrics */}
@@ -133,7 +147,7 @@ export default function LandingPage() {
       </section>
 
       {/* ================= How it works ================= */}
-      <section className="bg-[#FAFAF7] py-16 sm:py-24">
+      <section id="how-it-works" className="bg-[#FAFAF7] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#172018]">
             How AJOMI Works
@@ -172,7 +186,10 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <PricingCards showBillingToggle={true} />
+          <PricingCards 
+            showBillingToggle={true} 
+            onSelectPlan={(plan) => handleOpenRegister(plan)}
+          />
 
           <div className="mt-12 text-center">
             <Link 
@@ -185,6 +202,13 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ================= Registration Modal ================= */}
+      <RegisterModal 
+        isOpen={registerModalOpen} 
+        onClose={() => setRegisterModalOpen(false)} 
+        defaultPlan={selectedPlan}
+      />
     </div>
   );
 }

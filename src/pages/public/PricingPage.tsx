@@ -10,41 +10,62 @@ import {
   Send
 } from 'lucide-react';
 import { PricingCards } from '../../components/pricing/PricingCards';
+import { RegisterModal } from '../../components/auth/RegisterModal';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 
 export default function PricingPage() {
   const [showContactModal, setShowContactModal] = useState(false);
-  const [calculatorContributors, setCalculatorContributors] = useState(120);
-  const [calculatorDepositsPerMonth, setCalculatorDepositsPerMonth] = useState(25);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | undefined>(undefined);
+  const [calculatorContributors, setCalculatorContributors] = useState(150);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
     phone: '',
     businessName: '',
-    estimatedSavers: '200+',
+    estimatedSavers: '500+',
     message: ''
   });
 
-  // Calculate recommendation and estimates based on slider
-  const totalDeposits = calculatorContributors * calculatorDepositsPerMonth;
-  let recommendedPlan = 'Growth';
-  let baseFee = 8000;
-  let perDepositRate = 12;
+  // Calculate recommendation based on slider
+  let recommendedPlan = 'AJOMI Growth';
+  let planSlug = 'growth';
+  let baseFee = 5000;
+  let rangeLabel = '101 - 250 contributors';
+  let planDescription = 'Great for established collectors & microfinance operators with high-volume groups.';
 
-  if (calculatorContributors <= 50) {
-    recommendedPlan = 'Starter';
+  if (calculatorContributors <= 100) {
+    recommendedPlan = 'AJOMI Starter';
+    planSlug = 'starter';
     baseFee = 3000;
-    perDepositRate = 15;
-  } else if (calculatorContributors > 200) {
-    recommendedPlan = 'Enterprise';
-    baseFee = 15000; // illustrative custom base
-    perDepositRate = 8;
+    rangeLabel = 'Up to 100 contributors';
+    planDescription = 'Perfect for individual thrift collectors managing a tight portfolio of local savers.';
+  } else if (calculatorContributors <= 250) {
+    recommendedPlan = 'AJOMI Growth';
+    planSlug = 'growth';
+    baseFee = 5000;
+    rangeLabel = '101 - 250 contributors';
+    planDescription = 'Great for established collectors & microfinance operators with high-volume groups.';
+  } else if (calculatorContributors <= 500) {
+    recommendedPlan = 'AJOMI Scale';
+    planSlug = 'scale';
+    baseFee = 8500;
+    rangeLabel = '251 - 500 contributors';
+    planDescription = 'Designed for multi-agent cooperatives, loan portfolios, and expanding operations.';
+  } else {
+    recommendedPlan = 'AJOMI Enterprise';
+    planSlug = 'enterprise';
+    baseFee = 0;
+    rangeLabel = '500+ Contributors';
+    planDescription = 'Custom deployment, dedicated SLA, custom bank integrations, and unlimited field accounts.';
   }
 
-  const variableFee = totalDeposits * perDepositRate;
-  const estimatedTotal = baseFee + variableFee;
+  const handleOpenRegister = (plan?: string) => {
+    setSelectedPlan(plan);
+    setRegisterModalOpen(true);
+  };
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +78,7 @@ export default function PricingPage() {
         email: '',
         phone: '',
         businessName: '',
-        estimatedSavers: '200+',
+        estimatedSavers: '500+',
         message: ''
       });
     }, 2200);
@@ -86,7 +107,7 @@ export default function PricingPage() {
             <span className="text-[#055926]">your savings business</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg text-[#4B5563]">
-            From independent thrift collectors to large microfinance institutions. Clear monthly pricing with fair per-deposit fees and zero hidden charges.
+            From independent thrift collectors to large microfinance institutions. Clear monthly pricing with zero hidden charges.
           </p>
         </div>
 
@@ -104,7 +125,7 @@ export default function PricingPage() {
             </svg>
           </div>
 
-          {/* Faint ambient glow on right corner */}
+          {/* Ambient glow on right corner */}
           <div className="absolute -right-10 -top-10 w-72 h-72 rounded-full bg-[#055926]/15 blur-3xl pointer-events-none -z-10" />
 
           {/* Main AJOMI Deep Green Card Container */}
@@ -146,14 +167,13 @@ export default function PricingPage() {
                   </div>
 
                   {/* Primary Get Started Button */}
-                  <Link to="/register" className="block w-full">
-                    <button
-                      type="button"
-                      className="w-full rounded-2xl bg-white py-3.5 px-6 text-center text-sm font-black text-[#055926] shadow-lg shadow-black/10 hover:bg-[#FAFAF7] hover:shadow-xl active:scale-[0.98] transition-all"
-                    >
-                      Get Started Free
-                    </button>
-                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenRegister('growth')}
+                    className="w-full rounded-2xl bg-white py-3.5 px-6 text-center text-sm font-black text-[#055926] shadow-lg shadow-black/10 hover:bg-[#FAFAF7] hover:shadow-xl active:scale-[0.98] transition-all"
+                  >
+                    Get Started Free
+                  </button>
 
                 </div>
               </div>
@@ -168,39 +188,40 @@ export default function PricingPage() {
         <div className="mx-auto max-w-7xl">
           <PricingCards 
             showBillingToggle={true} 
-            onSelectEnterprise={() => setShowContactModal(true)} 
+            onSelectEnterprise={() => setShowContactModal(true)}
+            onSelectPlan={(plan) => handleOpenRegister(plan)}
           />
         </div>
       </section>
 
-      {/* ================= INTERACTIVE FEE CALCULATOR ================= */}
+      {/* ================= INTERACTIVE PLAN FINDER ================= */}
       <section className="border-t border-[#EAE8DF] bg-white py-16 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 rounded-full bg-[#f0f7f2] px-3.5 py-1 text-xs font-semibold text-[#055926] mb-3 border border-[#dceed2]">
               <Calculator className="h-3.5 w-3.5 text-[#055926]" />
-              Interactive Fee Estimator
+              Interactive Plan Finder
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#172018]">
-              Estimate your monthly software investment
+              Find the perfect plan for your contributor size
             </h2>
             <p className="mt-2 text-[#4B5563] text-sm max-w-xl mx-auto">
-              Slide to match your active contributor volume and expected daily or weekly collection frequency.
+              Slide to match your active contributor portfolio to see our recommended tier and flat monthly investment.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 rounded-3xl border border-[#EAE8DF] bg-[#FAFAF7] p-6 sm:p-8 lg:grid-cols-12 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
-            {/* Sliders on Left */}
+            {/* Slider on Left */}
             <div className="space-y-8 lg:col-span-7 pr-0 lg:pr-6 lg:border-r lg:border-[#EAE8DF]">
               <div>
                 <div className="flex justify-between text-sm font-semibold mb-2">
                   <span className="text-[#172018]">Active Contributors:</span>
-                  <span className="font-bold text-[#055926]">{calculatorContributors} savers</span>
+                  <span className="font-bold text-[#055926] text-base">{calculatorContributors} savers</span>
                 </div>
                 <input
                   type="range"
                   min="10"
-                  max="400"
+                  max="650"
                   step="5"
                   value={calculatorContributors}
                   onChange={(e) => setCalculatorContributors(Number(e.target.value))}
@@ -208,39 +229,26 @@ export default function PricingPage() {
                 />
                 <div className="flex justify-between text-[11px] font-medium text-[#586359] mt-1.5">
                   <span>10 (Starter)</span>
-                  <span>50</span>
-                  <span>200 (Growth)</span>
-                  <span>400+ (Enterprise)</span>
+                  <span>100</span>
+                  <span>250 (Growth)</span>
+                  <span>500 (Scale)</span>
+                  <span>500+ (Enterprise)</span>
                 </div>
               </div>
 
-              <div>
-                <div className="flex justify-between text-sm font-semibold mb-2">
-                  <span className="text-[#172018]">Average Deposits per Contributor / month:</span>
-                  <span className="font-bold text-[#055926]">{calculatorDepositsPerMonth} collections</span>
-                </div>
-                <input
-                  type="range"
-                  min="4"
-                  max="31"
-                  step="1"
-                  value={calculatorDepositsPerMonth}
-                  onChange={(e) => setCalculatorDepositsPerMonth(Number(e.target.value))}
-                  className="w-full accent-[#055926] h-2.5 bg-gray-200 rounded-lg cursor-pointer"
-                />
-                <div className="flex justify-between text-[11px] font-medium text-[#586359] mt-1.5">
-                  <span>4 (Weekly)</span>
-                  <span>15 (Bi-weekly)</span>
-                  <span>25 (Working Days)</span>
-                  <span>31 (Daily)</span>
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-[#dceed2] bg-[#f0f7f2]/70 p-4 text-xs text-[#055926] space-y-1.5">
-                <p className="font-bold">How per-deposit pricing protects you:</p>
-                <p className="text-[#172018]/80 leading-relaxed">
-                  You only pay transaction fees when money is actively saved by your customers. If a customer skips a day or pauses their thrift cycle, you incur zero variable cost.
+              <div className="rounded-2xl border border-[#dceed2] bg-[#f0f7f2]/80 p-4.5 text-xs text-[#055926] space-y-2">
+                <p className="font-bold flex items-center gap-1.5 text-sm">
+                  <Check className="h-4 w-4 text-[#055926]" />
+                  <span>Simple Flat-Rate Pricing</span>
                 </p>
+                <p className="text-[#172018]/85 leading-relaxed">
+                  Every AJOMI package comes with predictable flat monthly subscription pricing. You record unlimited deposits, savings entries, and payouts with zero per-transaction cuts.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-[#EAE8DF] bg-white p-4 text-xs text-[#586359]">
+                <p className="font-semibold text-[#172018] mb-1">Plan Overview</p>
+                <p className="leading-relaxed">{planDescription}</p>
               </div>
             </div>
 
@@ -248,57 +256,65 @@ export default function PricingPage() {
             <div className="flex flex-col justify-between lg:col-span-5 space-y-6">
               <div>
                 <span className="text-xs uppercase tracking-wider font-bold text-[#586359]">
-                  Recommended Tier
+                  Recommended Tier ({rangeLabel})
                 </span>
                 <div className="mt-1 flex items-center justify-between">
                   <span className="text-2xl font-bold text-[#172018]">{recommendedPlan}</span>
-                  <span className="rounded-full bg-[#fcf9ee] border border-[#D4A72C]/40 px-3 py-0.5 text-xs font-bold text-[#986d15]">
-                    ₦{perDepositRate}/deposit
+                  <span className="rounded-full bg-[#f0f7f2] border border-[#dceed2] px-3 py-0.5 text-xs font-bold text-[#055926]">
+                    {rangeLabel}
                   </span>
                 </div>
 
                 <div className="mt-6 space-y-3 border-t border-[#EAE8DF] pt-4 text-sm">
                   <div className="flex justify-between text-[#4B5563]">
-                    <span>Base Monthly Subscription:</span>
-                    <span className="font-semibold text-[#172018]">
-                      {recommendedPlan === 'Enterprise' ? 'Custom Quote' : `₦${baseFee.toLocaleString()}`}
+                    <span>Monthly Software Subscription:</span>
+                    <span className="font-bold text-[#172018] text-base">
+                      {recommendedPlan === 'AJOMI Enterprise' ? 'Custom Quote' : `₦${baseFee.toLocaleString()}/mo`}
                     </span>
                   </div>
                   <div className="flex justify-between text-[#4B5563]">
-                    <span>Total Deposits Processed:</span>
-                    <span className="font-semibold text-[#172018]">{totalDeposits.toLocaleString()} txns</span>
+                    <span>Transaction / Deposit Fees:</span>
+                    <span className="font-bold text-[#055926]">₦0 (Zero fees)</span>
                   </div>
                   <div className="flex justify-between text-[#4B5563]">
-                    <span>Deposit Volume Fees:</span>
-                    <span className="font-semibold text-[#172018]">₦{variableFee.toLocaleString()}</span>
+                    <span>Daily Collection Tracking:</span>
+                    <span className="font-semibold text-[#172018]">Unlimited</span>
+                  </div>
+                  <div className="flex justify-between text-[#4B5563]">
+                    <span>Audited Customer Ledgers:</span>
+                    <span className="font-semibold text-[#172018]">Included</span>
                   </div>
                 </div>
 
                 <div className="mt-6 border-t border-[#EAE8DF] pt-4">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-base font-semibold text-[#172018]">Estimated Monthly:</span>
+                    <span className="text-base font-semibold text-[#172018]">Total Investment:</span>
                     <span className="text-2xl font-extrabold text-[#055926]">
-                      ~₦{estimatedTotal.toLocaleString()}
+                      {recommendedPlan === 'AJOMI Enterprise' ? 'Custom Quote' : `₦${baseFee.toLocaleString()}/mo`}
                     </span>
                   </div>
                   <p className="text-[11px] text-[#586359] mt-1">
-                    Excludes SMS/WhatsApp airtime bundles if opting for direct network carrier messaging.
+                    First 30 days are 100% free with complete access to all plan features.
                   </p>
                 </div>
               </div>
 
-              <Link to={`/register?plan=${recommendedPlan.toLowerCase()}`} className="w-full">
+              <button
+                type="button"
+                onClick={() => handleOpenRegister(recommendedPlan)}
+                className="w-full"
+              >
                 <Button className="w-full rounded-2xl py-3 text-sm font-semibold flex items-center justify-center gap-2">
-                  <span>Choose {recommendedPlan} Plan</span>
+                  <span>Choose {recommendedPlan}</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= COMPREHENSIVE FEATURE MATRIX ================= */}
+      {/* ================= COMPREHENSIVE FEATURE MATRIX (4 PACKAGES) ================= */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-[#EAE8DF] bg-[#FAFAF7]">
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-14">
@@ -306,126 +322,131 @@ export default function PricingPage() {
               Full Feature Comparison
             </h2>
             <p className="mt-2 text-[#4B5563] text-sm max-w-xl mx-auto">
-              Compare every core capability across Starter, Growth, and Enterprise.
+              Compare capabilities across AJOMI Starter, AJOMI Growth, AJOMI Scale, and AJOMI Enterprise.
             </p>
           </div>
 
           <div className="overflow-x-auto rounded-3xl border border-[#EAE8DF] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="border-b border-[#EAE8DF] bg-[#FAFAF7]">
-                  <th className="py-4 px-6 text-sm font-bold text-[#172018] w-2/5">Capabilities</th>
-                  <th className="py-4 px-6 text-sm font-bold text-center text-[#172018] w-1/5">Starter</th>
-                  <th className="py-4 px-6 text-sm font-bold text-center text-[#055926] w-1/5 bg-[#f0f7f2] border-x border-[#dceed2]">
-                    Growth (Popular)
+                  <th className="py-4 px-5 text-sm font-bold text-[#172018] w-2/6">Capabilities</th>
+                  <th className="py-4 px-4 text-xs sm:text-sm font-bold text-center text-[#172018] w-1/6">AJOMI Starter</th>
+                  <th className="py-4 px-4 text-xs sm:text-sm font-bold text-center text-[#055926] w-1/6 bg-[#f0f7f2] border-x border-[#dceed2]">
+                    AJOMI Growth
                   </th>
-                  <th className="py-4 px-6 text-sm font-bold text-center text-[#172018] w-1/5">Enterprise</th>
+                  <th className="py-4 px-4 text-xs sm:text-sm font-bold text-center text-[#172018] w-1/6">AJOMI Scale</th>
+                  <th className="py-4 px-4 text-xs sm:text-sm font-bold text-center text-[#172018] w-1/6">AJOMI Enterprise</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#EAE8DF] text-sm">
                 {/* Contributors & Scale */}
                 <tr className="bg-[#FAFAF7]/50">
-                  <td colSpan={4} className="py-2.5 px-6 text-xs font-bold uppercase tracking-wider text-[#586359]">
-                    Contributor Capacity & Scale
+                  <td colSpan={5} className="py-2.5 px-5 text-xs font-bold uppercase tracking-wider text-[#586359]">
+                    Contributor Capacity & Pricing
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Contributor Capacity</td>
-                  <td className="py-3.5 px-6 text-center text-[#586359]">Up to 50</td>
-                  <td className="py-3.5 px-6 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">
-                    51 - 200
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Contributor Capacity</td>
+                  <td className="py-3.5 px-4 text-center text-[#586359] font-medium">Up to 100</td>
+                  <td className="py-3.5 px-4 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">
+                    101 - 250
                   </td>
-                  <td className="py-3.5 px-6 text-center text-[#172018] font-medium">200+ (Unlimited)</td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-medium">251 - 500</td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-medium">500+ Contributors</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Base Monthly Price</td>
-                  <td className="py-3.5 px-6 text-center text-[#172018] font-semibold">₦3,000</td>
-                  <td className="py-3.5 px-6 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">
-                    ₦8,000
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Base Monthly Price</td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-semibold">₦3,000</td>
+                  <td className="py-3.5 px-4 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">
+                    ₦5,000
                   </td>
-                  <td className="py-3.5 px-6 text-center text-[#172018] font-semibold">Custom</td>
-                </tr>
-                <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Per-Deposit Fee</td>
-                  <td className="py-3.5 px-6 text-center text-[#586359]">₦15</td>
-                  <td className="py-3.5 px-6 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">
-                    ₦12
-                  </td>
-                  <td className="py-3.5 px-6 text-center text-[#172018]">Volume Negotiated</td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-semibold">₦8,500</td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-semibold">Custom</td>
                 </tr>
 
                 {/* Operations */}
                 <tr className="bg-[#FAFAF7]/50">
-                  <td colSpan={4} className="py-2.5 px-6 text-xs font-bold uppercase tracking-wider text-[#586359]">
+                  <td colSpan={5} className="py-2.5 px-5 text-xs font-bold uppercase tracking-wider text-[#586359]">
                     Operations & Core Accounting
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Contributor Profiles & KYC</td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Contributor Profiles & KYC</td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Daily Collection Tracking</td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Daily Collection Tracking</td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Automated Ledger & Receipts</td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Automated Ledger & Receipts</td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Basic Analytics & Summaries</td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Basic Analytics & Summaries</td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
 
                 {/* Advanced Features */}
                 <tr className="bg-[#FAFAF7]/50">
-                  <td colSpan={4} className="py-2.5 px-6 text-xs font-bold uppercase tracking-wider text-[#586359]">
+                  <td colSpan={5} className="py-2.5 px-5 text-xs font-bold uppercase tracking-wider text-[#586359]">
                     Advanced Modules & Automation
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Loan & Advance Management</td>
-                  <td className="py-3.5 px-6 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Loan & Advance Management</td>
+                  <td className="py-3.5 px-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Instant WhatsApp Alerts</td>
-                  <td className="py-3.5 px-6 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Instant WhatsApp Alerts</td>
+                  <td className="py-3.5 px-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Full Business Analytics Dashboard</td>
-                  <td className="py-3.5 px-6 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Full Business Analytics Dashboard</td>
+                  <td className="py-3.5 px-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Staff / Field Collector Accounts</td>
-                  <td className="py-3.5 px-6 text-center text-[#586359]">Up to 2</td>
-                  <td className="py-3.5 px-6 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">Up to 10</td>
-                  <td className="py-3.5 px-6 text-center text-[#172018] font-medium">Unlimited</td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Staff / Field Collector Accounts</td>
+                  <td className="py-3.5 px-4 text-center text-[#586359]">Up to 2</td>
+                  <td className="py-3.5 px-4 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">Up to 10</td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-medium">Up to 30</td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-medium">Unlimited</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Custom Commission Rules</td>
-                  <td className="py-3.5 px-6 text-center text-[#586359]">Standard 1-Day</td>
-                  <td className="py-3.5 px-6 text-center text-[#055926] font-bold bg-[#f0f7f2]/50 border-x border-[#dceed2]">Custom % or Fixed</td>
-                  <td className="py-3.5 px-6 text-center text-[#172018] font-medium">Tiered Multi-Scheme</td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Custom SMS Sender ID</td>
+                  <td className="py-3.5 px-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]">Optional</td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-6 text-[#172018] font-medium">Dedicated Account Manager & SLA</td>
-                  <td className="py-3.5 px-6 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
-                  <td className="py-3.5 px-6 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
+                  <td className="py-3.5 px-5 text-[#172018] font-medium">Dedicated Support & Account SLA</td>
+                  <td className="py-3.5 px-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center bg-[#f0f7f2]/50 border-x border-[#dceed2]"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                  <td className="py-3.5 px-4 text-center text-[#172018] font-medium">Priority</td>
+                  <td className="py-3.5 px-4 text-center"><Check className="h-5 w-5 text-[#055926] mx-auto" /></td>
                 </tr>
               </tbody>
             </table>
@@ -448,20 +469,20 @@ export default function PricingPage() {
           <div className="space-y-4">
             {[
               {
-                q: "What happens when my contributors grow beyond 50?",
-                a: "You will receive a gentle prompt on your dashboard when approaching your plan limit. You can seamlessly upgrade from Starter to Growth with one click, preserving all historical transactions and customer ledgers without any downtime."
+                q: "What happens when my contributors grow beyond 100?",
+                a: "You will receive a gentle prompt on your dashboard when approaching your plan limit. You can seamlessly upgrade from AJOMI Starter to AJOMI Growth (101 - 250) or AJOMI Scale (251 - 500) with one click, preserving all historical records without any downtime."
               },
               {
-                q: "How does the per-deposit fee (+ ₦15 or ₦12) get billed?",
-                a: "Per-deposit fees are aggregated across your active collections during the billing cycle and billed monthly alongside your software subscription. There are never upfront fees for inactive contributors."
+                q: "Are there any per-deposit or transaction fees?",
+                a: "No. AJOMI uses 100% flat, transparent monthly subscription pricing. There are zero deductions, zero per-deposit cuts, and zero variable transaction charges on your collections."
               },
               {
                 q: "Can I try AJOMI before paying?",
-                a: "Yes! Every new account includes a 14-day free trial on either Starter or Growth with complete access to real collection tracking, customer registration, and ledger reports."
+                a: "Yes! Every new account includes a 14-day free trial on either Starter, Growth, or Scale with complete access to real collection tracking, customer registration, and ledger reports."
               },
               {
-                q: "How does WhatsApp alerts integration work in the Growth tier?",
-                a: "Whenever a field collector records a contribution or a customer payout is processed, AJOMI can automatically dispatch instant WhatsApp notification receipts to your customer's mobile number, boosting trust and eliminating disputes."
+                q: "Can contributors register directly on the platform?",
+                a: "Yes! AJOMI supports both Tenant / Collector registrations (for organizers and managers) and Contributor registrations (for daily savers who want to track their cards and verified savings balances)."
               },
               {
                 q: "Is my customers' financial data private and secure?",
@@ -490,17 +511,16 @@ export default function PricingPage() {
               Ready to automate your daily savings operations?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-emerald-100 text-base">
-              Join dozens of thrift managers who have eliminated manual ledger mistakes and scaled their customer base with AJOMI.
+              Join dozens of thrift managers and contributors who have eliminated manual ledger mistakes and scaled their network with AJOMI.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/register">
-                <button
-                  type="button"
-                  className="w-full sm:w-auto rounded-2xl bg-[#D4A72C] px-8 py-3.5 text-base font-bold text-[#172018] shadow-lg hover:bg-[#bb8d1e] transition-all active:scale-98"
-                >
-                  Start 14-Day Free Trial
-                </button>
-              </Link>
+              <button
+                type="button"
+                onClick={() => handleOpenRegister()}
+                className="w-full sm:w-auto rounded-2xl bg-[#D4A72C] px-8 py-3.5 text-base font-bold text-[#172018] shadow-lg hover:bg-[#bb8d1e] transition-all active:scale-98"
+              >
+                Start 14-Day Free Trial
+              </button>
               <button
                 type="button"
                 onClick={() => setShowContactModal(true)}
@@ -539,7 +559,7 @@ export default function PricingPage() {
               <div>
                 <h3 className="text-xl font-bold text-[#172018]">Enterprise Plan Inquiry</h3>
                 <p className="mt-1 text-xs text-[#4B5563]">
-                  For businesses managing 200+ contributors, multi-branch operations, or bespoke workflows.
+                  For businesses managing 500+ contributors, multi-branch operations, or bespoke workflows.
                 </p>
 
                 <form onSubmit={handleContactSubmit} className="mt-6 space-y-4">
@@ -599,7 +619,7 @@ export default function PricingPage() {
                         onChange={(e) => setContactForm({ ...contactForm, estimatedSavers: e.target.value })}
                         className="mt-1 block h-11 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-[#172018] focus:border-[#055926] focus:outline-none focus:ring-2 focus:ring-[#055926]"
                       >
-                        <option value="200-500">200 - 500 savers</option>
+                        <option value="250-500">250 - 500 savers</option>
                         <option value="500-1000">500 - 1,000 savers</option>
                         <option value="1000-5000">1,000 - 5,000 savers</option>
                         <option value="5000+">5,000+ savers</option>
@@ -631,7 +651,13 @@ export default function PricingPage() {
         </div>
       )}
 
+      {/* ================= REGISTRATION MODAL ================= */}
+      <RegisterModal 
+        isOpen={registerModalOpen} 
+        onClose={() => setRegisterModalOpen(false)} 
+        defaultPlan={selectedPlan}
+      />
+
     </div>
   );
 }
-

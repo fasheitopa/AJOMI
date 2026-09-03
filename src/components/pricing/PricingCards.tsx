@@ -1,34 +1,31 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, X } from 'lucide-react';
+import { Check, X, Sparkles } from 'lucide-react';
 
 export interface PricingCardsProps {
   showBillingToggle?: boolean;
   onSelectEnterprise?: () => void;
+  onSelectPlan?: (planName: string) => void;
 }
 
-export const PRICING_FEATURES = [
-  { id: 'contributor_mgmt', label: 'Contributor Management' },
-  { id: 'daily_tracking', label: 'Daily Collection Tracking' },
-  { id: 'automated_records', label: 'Automated Records' },
-  { id: 'basic_analytics', label: 'Basic Analytics' },
-  { id: 'loan_mgmt', label: 'Loan Management' },
-  { id: 'whatsapp_alerts', label: 'WhatsApp Alerts' },
-  { id: 'full_analytics', label: 'Full Analytics Dashboard' },
-  { id: 'dedicated_support', label: 'Dedicated Support' },
-];
-
-export function PricingCards({ showBillingToggle = true, onSelectEnterprise }: PricingCardsProps) {
+export function PricingCards({ showBillingToggle = true, onSelectEnterprise, onSelectPlan }: PricingCardsProps) {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annually'>('monthly');
 
   // Annual discount is ~15% off base monthly cost
   const starterBase = billingCycle === 'monthly' ? 3000 : 2550;
-  const growthBase = billingCycle === 'monthly' ? 8000 : 6800;
+  const growthBase = billingCycle === 'monthly' ? 5000 : 4250;
+  const scaleBase = billingCycle === 'monthly' ? 8500 : 7225;
+
+  const handlePlanClick = (planSlug: string, planName: string) => {
+    if (onSelectPlan) {
+      onSelectPlan(planName);
+    }
+  };
 
   return (
     <div className="w-full">
       {showBillingToggle && (
-        <div className="flex flex-col items-center justify-center mb-12">
+        <div className="flex flex-col items-center justify-center mb-10">
           <div className="inline-flex items-center rounded-full border border-[#EAE8DF] bg-white p-1.5 shadow-sm">
             <button
               type="button"
@@ -58,340 +55,385 @@ export function PricingCards({ showBillingToggle = true, onSelectEnterprise }: P
           </div>
           {billingCycle === 'annually' && (
             <p className="mt-2 text-xs text-[#586359]">
-              Billed annually. Per-deposit fees remain unchanged.
+              Billed annually. Save 15% on your monthly subscription rate.
             </p>
           )}
         </div>
       )}
 
-      {/* Grid of 3 Cards */}
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-3 lg:items-stretch">
+      {/* Grid of 4 Cards */}
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 items-stretch">
         
-        {/* ================= STARTER CARD ================= */}
-        <div className="relative flex flex-col justify-between rounded-3xl border border-[#EAE8DF] bg-white p-7 sm:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-[#dceed2]">
+        {/* ================= 1. AJOMI STARTER ================= */}
+        <div className="relative flex flex-col justify-between rounded-3xl border border-[#EAE8DF] bg-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-[#dceed2]">
           <div>
             {/* Top pill badge */}
-            <div className="mb-4">
-              <span className="inline-flex items-center rounded-full bg-[#f0f7f2] px-3.5 py-1 text-xs font-semibold text-[#055926] border border-[#dceed2]">
-                Up to 50 contributors
+            <div className="mb-3 flex justify-center">
+              <span className="inline-flex items-center rounded-full bg-[#f0f7f2] px-3 py-1 text-xs font-semibold text-[#055926] border border-[#dceed2]">
+                Up to 100 contributors
               </span>
             </div>
 
             {/* Plan Title */}
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#172018]">
-              Starter
+            <h3 className="text-xl sm:text-2xl font-black tracking-tight text-[#172018] text-center">
+              AJOMI Starter
             </h3>
 
             {/* Price Box */}
-            <div className="mt-6 mb-8 rounded-2xl border border-[#EAE8DF] bg-[#FAFAF7] p-5">
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#172018]">
+            <div className="mt-4 mb-6 rounded-2xl border border-[#EAE8DF] bg-[#FAFAF7] p-4 text-center">
+              <div className="flex items-baseline justify-center gap-1">
+                <span className="text-2xl sm:text-3xl font-black tracking-tight text-[#172018]">
                   ₦{starterBase.toLocaleString()}
                 </span>
-                <span className="text-sm font-medium text-[#586359]">/month</span>
+                <span className="text-xs font-medium text-[#586359]">/month</span>
               </div>
-              <p className="mt-1.5 text-xs sm:text-sm font-semibold text-[#055926]">
-                + ₦15 per deposit
-              </p>
             </div>
 
             {/* Features List */}
-            <ul className="space-y-4">
-              {/* 1. Contributor Management */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+            <ul className="space-y-3 text-xs sm:text-sm">
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Contributor Management</span>
+                <span className="font-medium text-[#172018]">Contributor Management</span>
               </li>
-
-              {/* 2. Daily Collection Tracking */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Daily Collection Tracking</span>
+                <span className="font-medium text-[#172018]">Daily Collection Tracking</span>
               </li>
-
-              {/* 3. Automated Records */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Automated Records</span>
+                <span className="font-medium text-[#172018]">Automated Records</span>
               </li>
-
-              {/* 4. Basic Analytics */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Basic Analytics</span>
+                <span className="font-medium text-[#172018]">Basic Analytics</span>
               </li>
-
-              {/* 5. Loan Management (Excluded) */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center text-gray-300">
-                  <X className="h-4 w-4" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center text-gray-300">
+                  <X className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-sm text-gray-400">Loan Management</span>
+                <span className="text-gray-400">Loan Management</span>
               </li>
-
-              {/* 6. WhatsApp Alerts (Excluded) */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center text-gray-300">
-                  <X className="h-4 w-4" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center text-gray-300">
+                  <X className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-sm text-gray-400">WhatsApp Alerts</span>
+                <span className="text-gray-400">WhatsApp Alerts</span>
               </li>
-
-              {/* 7. Full Analytics Dashboard (Excluded) */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center text-gray-300">
-                  <X className="h-4 w-4" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center text-gray-300">
+                  <X className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-sm text-gray-400">Full Analytics Dashboard</span>
-              </li>
-
-              {/* 8. Dedicated Support (Excluded) */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center text-gray-300">
-                  <X className="h-4 w-4" />
-                </div>
-                <span className="text-sm text-gray-400">Dedicated Support</span>
+                <span className="text-gray-400">Dedicated Support</span>
               </li>
             </ul>
           </div>
 
           {/* Bottom Action Button */}
-          <div className="mt-8 pt-4">
-            <Link to="/register?plan=starter" className="block w-full">
+          <div className="mt-6 pt-3">
+            {onSelectPlan ? (
               <button
                 type="button"
-                className="w-full rounded-2xl border-2 border-[#055926] py-3.5 px-6 text-sm font-bold text-[#055926] transition-all hover:bg-[#055926] hover:text-white active:scale-[0.99]"
+                onClick={() => handlePlanClick('starter', 'AJOMI Starter')}
+                className="w-full rounded-2xl border-2 border-[#055926] py-3 px-4 text-xs sm:text-sm font-bold text-[#055926] transition-all hover:bg-[#055926] hover:text-white active:scale-[0.99]"
               >
                 Get Started
               </button>
-            </Link>
+            ) : (
+              <Link to="/register?plan=starter" className="block w-full">
+                <button
+                  type="button"
+                  className="w-full rounded-2xl border-2 border-[#055926] py-3 px-4 text-xs sm:text-sm font-bold text-[#055926] transition-all hover:bg-[#055926] hover:text-white active:scale-[0.99]"
+                >
+                  Get Started
+                </button>
+              </Link>
+            )}
           </div>
         </div>
 
 
-        {/* ================= GROWTH CARD (MOST POPULAR) ================= */}
-        <div className="relative flex flex-col justify-between rounded-3xl border-2 border-[#D4A72C]/70 bg-gradient-to-b from-[#055926] to-[#033c1a] p-7 sm:p-8 shadow-2xl shadow-[#055926]/30 lg:-translate-y-2 lg:scale-[1.03] transition-all duration-200">
+        {/* ================= 2. AJOMI GROWTH (POPULAR) ================= */}
+        <div className="relative flex flex-col justify-between rounded-3xl border-2 border-[#D4A72C] bg-gradient-to-b from-[#055926] to-[#033c1a] p-6 sm:p-7 shadow-xl shadow-[#055926]/20 transition-all duration-200">
           <div>
             {/* Top pill badges */}
-            <div className="flex items-center justify-between mb-4">
-              <span className="inline-flex items-center rounded-full bg-white/15 px-3.5 py-1 text-xs font-semibold text-emerald-50 border border-white/20">
-                51-200 contributors
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <span className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-emerald-50 border border-white/20">
+                101 - 250 contributors
               </span>
-              <span className="inline-flex items-center rounded-full bg-[#D4A72C] px-3.5 py-1 text-xs font-black text-[#172018] shadow-md uppercase tracking-wider">
-                Most Popular
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#D4A72C] px-2.5 py-0.5 text-[10px] font-black text-[#172018] shadow-sm uppercase tracking-wider">
+                <Sparkles className="h-3 w-3" />
+                Popular
               </span>
             </div>
 
             {/* Plan Title */}
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-              Growth
+            <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white text-center">
+              AJOMI Growth
             </h3>
 
             {/* Price Box */}
-            <div className="mt-6 mb-8 rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur-md">
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            <div className="mt-4 mb-6 rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-md text-center">
+              <div className="flex items-baseline justify-center gap-1">
+                <span className="text-2xl sm:text-3xl font-black tracking-tight text-white">
                   ₦{growthBase.toLocaleString()}
                 </span>
-                <span className="text-sm font-normal text-emerald-100/80">/month</span>
+                <span className="text-xs font-normal text-emerald-100/80">/month</span>
               </div>
-              <p className="mt-1.5 text-xs sm:text-sm font-semibold text-[#fcf9ee]">
-                + ₦12 per deposit
-              </p>
             </div>
 
             {/* Features List */}
-            <ul className="space-y-4">
-              {/* 1. Contributor Management */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
-                  <Check className="h-3 w-3 stroke-[3]" />
+            <ul className="space-y-3 text-xs sm:text-sm">
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-white">Contributor Management</span>
+                <span className="font-medium text-white">Contributor Management</span>
               </li>
-
-              {/* 2. Daily Collection Tracking */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-white">Daily Collection Tracking</span>
+                <span className="font-medium text-white">Daily Collection Tracking</span>
               </li>
-
-              {/* 3. Automated Records */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-white">Automated Records</span>
+                <span className="font-medium text-white">Automated Records</span>
               </li>
-
-              {/* 4. Basic Analytics */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-white">Basic Analytics</span>
+                <span className="font-medium text-white">Loan Management</span>
               </li>
-
-              {/* 5. Loan Management */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-white">Loan Management</span>
+                <span className="font-medium text-white">WhatsApp Alerts</span>
               </li>
-
-              {/* 6. WhatsApp Alerts */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-white">WhatsApp Alerts</span>
+                <span className="font-medium text-white">Full Analytics Dashboard</span>
               </li>
-
-              {/* 7. Full Analytics Dashboard */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A72C] text-[#172018]">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center text-white/30">
+                  <X className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-sm font-medium text-white">Full Analytics Dashboard</span>
-              </li>
-
-              {/* 8. Dedicated Support (Excluded) */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center text-white/30">
-                  <X className="h-4 w-4" />
-                </div>
-                <span className="text-sm text-white/40">Dedicated Support</span>
+                <span className="text-white/40">Dedicated Support</span>
               </li>
             </ul>
           </div>
 
           {/* Bottom Action Button */}
-          <div className="mt-8 pt-4">
-            <Link to="/register?plan=growth" className="block w-full">
+          <div className="mt-6 pt-3">
+            {onSelectPlan ? (
               <button
                 type="button"
-                className="w-full rounded-2xl bg-white py-3.5 px-6 text-sm font-bold text-[#055926] shadow-lg transition-all hover:bg-[#f0f7f2] active:scale-[0.99]"
+                onClick={() => handlePlanClick('growth', 'AJOMI Growth')}
+                className="w-full rounded-2xl bg-white py-3 px-4 text-xs sm:text-sm font-black text-[#055926] shadow-lg transition-all hover:bg-[#f0f7f2] active:scale-[0.99]"
               >
                 Get Started
               </button>
-            </Link>
+            ) : (
+              <Link to="/register?plan=growth" className="block w-full">
+                <button
+                  type="button"
+                  className="w-full rounded-2xl bg-white py-3 px-4 text-xs sm:text-sm font-black text-[#055926] shadow-lg transition-all hover:bg-[#f0f7f2] active:scale-[0.99]"
+                >
+                  Get Started
+                </button>
+              </Link>
+            )}
           </div>
         </div>
 
 
-        {/* ================= ENTERPRISE CARD ================= */}
-        <div className="relative flex flex-col justify-between rounded-3xl border border-[#EAE8DF] bg-white p-7 sm:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-[#dceed2]">
+        {/* ================= 3. AJOMI SCALE ================= */}
+        <div className="relative flex flex-col justify-between rounded-3xl border border-[#EAE8DF] bg-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-[#dceed2]">
           <div>
             {/* Top pill badge */}
-            <div className="mb-4">
-              <span className="inline-flex items-center rounded-full bg-[#1F2937]/5 px-3.5 py-1 text-xs font-semibold text-[#1F2937] border border-[#1F2937]/15">
-                200+ contributors
+            <div className="mb-3 flex justify-center">
+              <span className="inline-flex items-center rounded-full bg-[#fcf9ee] px-3 py-1 text-xs font-semibold text-[#986d15] border border-[#D4A72C]/40">
+                251 - 500 contributors
               </span>
             </div>
 
             {/* Plan Title */}
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#172018]">
-              Enterprise
+            <h3 className="text-xl sm:text-2xl font-black tracking-tight text-[#172018] text-center">
+              AJOMI Scale
             </h3>
 
             {/* Price Box */}
-            <div className="mt-6 mb-8 rounded-2xl border border-[#EAE8DF] bg-[#FAFAF7] p-5">
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#172018]">
+            <div className="mt-4 mb-6 rounded-2xl border border-[#EAE8DF] bg-[#FAFAF7] p-4 text-center">
+              <div className="flex items-baseline justify-center gap-1">
+                <span className="text-2xl sm:text-3xl font-black tracking-tight text-[#172018]">
+                  ₦{scaleBase.toLocaleString()}
+                </span>
+                <span className="text-xs font-medium text-[#586359]">/month</span>
+              </div>
+            </div>
+
+            {/* Features List */}
+            <ul className="space-y-3 text-xs sm:text-sm">
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                </div>
+                <span className="font-medium text-[#172018]">All Growth Features</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                </div>
+                <span className="font-medium text-[#172018]">Multiple Field Agents</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                </div>
+                <span className="font-medium text-[#172018]">Advanced Loan Engine</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                </div>
+                <span className="font-medium text-[#172018]">Custom SMS Sender ID</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                </div>
+                <span className="font-medium text-[#172018]">Branch Performance Ledgers</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                </div>
+                <span className="font-medium text-[#172018]">Priority Phone & Chat</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center text-gray-300">
+                  <X className="h-3.5 w-3.5" />
+                </div>
+                <span className="text-gray-400">Custom Bank API Integration</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Bottom Action Button */}
+          <div className="mt-6 pt-3">
+            {onSelectPlan ? (
+              <button
+                type="button"
+                onClick={() => handlePlanClick('scale', 'AJOMI Scale')}
+                className="w-full rounded-2xl border-2 border-[#055926] py-3 px-4 text-xs sm:text-sm font-bold text-[#055926] transition-all hover:bg-[#055926] hover:text-white active:scale-[0.99]"
+              >
+                Get Started
+              </button>
+            ) : (
+              <Link to="/register?plan=scale" className="block w-full">
+                <button
+                  type="button"
+                  className="w-full rounded-2xl border-2 border-[#055926] py-3 px-4 text-xs sm:text-sm font-bold text-[#055926] transition-all hover:bg-[#055926] hover:text-white active:scale-[0.99]"
+                >
+                  Get Started
+                </button>
+              </Link>
+            )}
+          </div>
+        </div>
+
+
+        {/* ================= 4. AJOMI ENTERPRISE ================= */}
+        <div className="relative flex flex-col justify-between rounded-3xl border border-[#EAE8DF] bg-white p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-all duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-[#dceed2]">
+          <div>
+            {/* Top pill badge */}
+            <div className="mb-3 flex justify-center">
+              <span className="inline-flex items-center rounded-full bg-[#1F2937]/5 px-3 py-1 text-xs font-semibold text-[#1F2937] border border-[#1F2937]/15">
+                500+ Contributors
+              </span>
+            </div>
+
+            {/* Plan Title */}
+            <h3 className="text-xl sm:text-2xl font-black tracking-tight text-[#172018] text-center">
+              AJOMI Enterprise
+            </h3>
+
+            {/* Price Box */}
+            <div className="mt-4 mb-6 rounded-2xl border border-[#EAE8DF] bg-[#FAFAF7] p-4 text-center">
+              <div className="flex items-baseline justify-center gap-1">
+                <span className="text-2xl sm:text-3xl font-black tracking-tight text-[#172018]">
                   Custom
                 </span>
               </div>
-              <p className="mt-1.5 text-xs sm:text-sm font-semibold text-[#586359]">
-                + Negotiated volume
-              </p>
             </div>
 
             {/* Features List */}
-            <ul className="space-y-4">
-              {/* 1. Contributor Management */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+            <ul className="space-y-3 text-xs sm:text-sm">
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Contributor Management</span>
+                <span className="font-medium text-[#172018]">Everything in Scale</span>
               </li>
-
-              {/* 2. Daily Collection Tracking */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Daily Collection Tracking</span>
+                <span className="font-medium text-[#172018]">Unlimited Contributors</span>
               </li>
-
-              {/* 3. Automated Records */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Automated Records</span>
+                <span className="font-medium text-[#172018]">Dedicated Account Manager</span>
               </li>
-
-              {/* 4. Basic Analytics */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Basic Analytics</span>
+                <span className="font-medium text-[#172018]">Direct Bank API Integrations</span>
               </li>
-
-              {/* 5. Loan Management */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Loan Management</span>
+                <span className="font-medium text-[#172018]">Custom SLA & Security Audit</span>
               </li>
-
-              {/* 6. WhatsApp Alerts */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">WhatsApp Alerts</span>
+                <span className="font-medium text-[#172018]">On-premise / Private DB option</span>
               </li>
-
-              {/* 7. Full Analytics Dashboard */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+              <li className="flex items-center gap-2.5">
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
-                <span className="text-sm font-medium text-[#172018]">Full Analytics Dashboard</span>
-              </li>
-
-              {/* 8. Dedicated Support */}
-              <li className="flex items-center gap-3">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#055926] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
-                </div>
-                <span className="text-sm font-medium text-[#172018]">Dedicated Support</span>
+                <span className="font-medium text-[#172018]">Onboarding & Staff Training</span>
               </li>
             </ul>
           </div>
 
           {/* Bottom Action Button */}
-          <div className="mt-8 pt-4">
+          <div className="mt-6 pt-3">
             {onSelectEnterprise ? (
               <button
                 type="button"
                 onClick={onSelectEnterprise}
-                className="w-full rounded-2xl border-2 border-[#1F2937] py-3.5 px-6 text-sm font-bold text-[#1F2937] transition-all hover:bg-[#1F2937] hover:text-white active:scale-[0.99]"
+                className="w-full rounded-2xl border-2 border-[#1F2937] py-3 px-4 text-xs sm:text-sm font-bold text-[#1F2937] transition-all hover:bg-[#1F2937] hover:text-white active:scale-[0.99]"
               >
                 Contact Us
               </button>
@@ -399,7 +441,7 @@ export function PricingCards({ showBillingToggle = true, onSelectEnterprise }: P
               <a href="#contact" className="block w-full">
                 <button
                   type="button"
-                  className="w-full rounded-2xl border-2 border-[#1F2937] py-3.5 px-6 text-sm font-bold text-[#1F2937] transition-all hover:bg-[#1F2937] hover:text-white active:scale-[0.99]"
+                  className="w-full rounded-2xl border-2 border-[#1F2937] py-3 px-4 text-xs sm:text-sm font-bold text-[#1F2937] transition-all hover:bg-[#1F2937] hover:text-white active:scale-[0.99]"
                 >
                   Contact Us
                 </button>
