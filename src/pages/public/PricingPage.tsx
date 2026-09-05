@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   Check, 
   X, 
@@ -10,14 +10,12 @@ import {
   Send
 } from 'lucide-react';
 import { PricingCards } from '../../components/pricing/PricingCards';
-import { RegisterModal } from '../../components/auth/RegisterModal';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 
 export default function PricingPage() {
+  const navigate = useNavigate();
   const [showContactModal, setShowContactModal] = useState(false);
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<string | undefined>(undefined);
   const [calculatorContributors, setCalculatorContributors] = useState(150);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [contactForm, setContactForm] = useState({
@@ -62,9 +60,13 @@ export default function PricingPage() {
     planDescription = 'Custom deployment, dedicated SLA, custom bank integrations, and unlimited field accounts.';
   }
 
-  const handleOpenRegister = (plan?: string) => {
-    setSelectedPlan(plan);
-    setRegisterModalOpen(true);
+  const handleOpenRegister = (planName?: string) => {
+    if (planName) {
+      const slug = planName.toLowerCase().replace('ajomi', '').trim();
+      navigate(`/register?plan=${encodeURIComponent(slug)}`);
+    } else {
+      navigate('/register');
+    }
   };
 
   const handleContactSubmit = (e: React.FormEvent) => {
@@ -650,13 +652,6 @@ export default function PricingPage() {
           </div>
         </div>
       )}
-
-      {/* ================= REGISTRATION MODAL ================= */}
-      <RegisterModal 
-        isOpen={registerModalOpen} 
-        onClose={() => setRegisterModalOpen(false)} 
-        defaultPlan={selectedPlan}
-      />
 
     </div>
   );

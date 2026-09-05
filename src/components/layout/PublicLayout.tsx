@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Shield, Menu, X, ArrowRight, Sparkles, Smartphone, Download, QrCode, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { RegisterModal } from '../auth/RegisterModal';
 
 export default function PublicLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const location = useLocation();
 
   return (
@@ -82,13 +80,14 @@ export default function PublicLayout() {
                 Log in
               </Button>
             </Link>
-            <Button 
-              onClick={() => setRegisterModalOpen(true)}
-              className="text-sm font-bold shadow-md shadow-[#055926]/20"
-              id="nav-get-started-btn"
-            >
-              Get Started Free
-            </Button>
+            <Link to="/register">
+              <Button 
+                className="text-sm font-bold shadow-md shadow-[#055926]/20"
+                id="nav-get-started-btn"
+              >
+                Get Started Free
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -164,16 +163,14 @@ export default function PublicLayout() {
                 <Smartphone className="h-4 w-4" />
                 <span>Download APP (Android & iOS)</span>
               </button>
-              <Button 
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setRegisterModalOpen(true);
-                }} 
-                className="w-full justify-center text-sm font-bold py-3 shadow-md"
-                id="mobile-get-started-btn"
-              >
-                Create Free Account
-              </Button>
+              <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="w-full">
+                <Button 
+                  className="w-full justify-center text-sm font-bold py-3 shadow-md"
+                  id="mobile-get-started-btn"
+                >
+                  Create Free Account
+                </Button>
+              </Link>
               <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full">
                 <Button variant="outline" className="w-full justify-center text-sm font-medium py-3 border-[#EAE8DF]">
                   Log In to Business
@@ -383,12 +380,6 @@ export default function PublicLayout() {
           </div>
         </div>
       )}
-
-      {/* Registration Modal */}
-      <RegisterModal 
-        isOpen={registerModalOpen} 
-        onClose={() => setRegisterModalOpen(false)} 
-      />
     </div>
   );
 }

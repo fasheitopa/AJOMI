@@ -1,17 +1,18 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { Users, PieChart, ShieldCheck, ArrowRight, Sparkles, Smartphone } from 'lucide-react';
 import { PricingCards } from '../../components/pricing/PricingCards';
-import { RegisterModal } from '../../components/auth/RegisterModal';
 
 export default function LandingPage() {
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<string | undefined>(undefined);
+  const navigate = useNavigate();
 
-  const handleOpenRegister = (plan?: string) => {
-    setSelectedPlan(plan);
-    setRegisterModalOpen(true);
+  const handleOpenRegister = (planName?: string) => {
+    if (planName) {
+      const slug = planName.toLowerCase().replace('ajomi', '').trim();
+      navigate(`/register?plan=${encodeURIComponent(slug)}`);
+    } else {
+      navigate('/register');
+    }
   };
 
   return (
@@ -202,13 +203,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* ================= Registration Modal ================= */}
-      <RegisterModal 
-        isOpen={registerModalOpen} 
-        onClose={() => setRegisterModalOpen(false)} 
-        defaultPlan={selectedPlan}
-      />
     </div>
   );
 }
