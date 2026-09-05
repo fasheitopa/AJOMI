@@ -1,6 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
-import { Users, PieChart, ShieldCheck, ArrowRight, Sparkles, Smartphone } from 'lucide-react';
+import { 
+  Users, 
+  PieChart, 
+  ShieldCheck, 
+  ArrowRight, 
+  Sparkles, 
+  Smartphone,
+  Facebook,
+  Instagram,
+  Twitter,
+  MessageCircle
+} from 'lucide-react';
 import { PricingCards } from '../../components/pricing/PricingCards';
 
 export default function LandingPage() {
@@ -72,6 +83,82 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+
+        {/* ================= Vertical Social Media FAB (Right Side of Hero) ================= */}
+        <aside 
+          aria-label="Connect with AJOMI on social media"
+          className="absolute right-2.5 sm:right-5 lg:right-7 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center"
+        >
+          <div className="flex flex-col items-center gap-2 p-1.5 sm:p-2 rounded-2xl bg-white/95 border border-[#EAE8DF] shadow-xl shadow-black/10 backdrop-blur-md">
+            <span className="text-[9px] font-black uppercase tracking-wider text-[#586359] [writing-mode:vertical-lr] rotate-180 py-1 select-none hidden lg:block">
+              Follow Us
+            </span>
+
+            {/* Facebook FAB */}
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit AJOMI on Facebook"
+              title="Facebook"
+              id="hero-social-fab-facebook"
+              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-[#1877F2] hover:text-white border border-[#EAE8DF] hover:border-[#1877F2] shadow-xs hover:shadow-md transition-all hover:scale-105"
+            >
+              <Facebook className="h-4 w-4 transition-transform group-hover:scale-110" />
+              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+                Facebook
+              </span>
+            </a>
+
+            {/* Instagram FAB */}
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit AJOMI on Instagram"
+              title="Instagram"
+              id="hero-social-fab-instagram"
+              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white border border-[#EAE8DF] hover:border-pink-500 shadow-xs hover:shadow-md transition-all hover:scale-105"
+            >
+              <Instagram className="h-4 w-4 transition-transform group-hover:scale-110" />
+              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+                Instagram
+              </span>
+            </a>
+
+            {/* X (Twitter) FAB */}
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow AJOMI on X"
+              title="X"
+              id="hero-social-fab-x"
+              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-black hover:text-white border border-[#EAE8DF] hover:border-black shadow-xs hover:shadow-md transition-all hover:scale-105"
+            >
+              <Twitter className="h-4 w-4 transition-transform group-hover:scale-110" />
+              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+                X (Twitter)
+              </span>
+            </a>
+
+            {/* WhatsApp FAB */}
+            <a
+              href="https://wa.me/2348000000000?text=Hello%20AJOMI%20Team%2C%20I%20would%20like%20to%20inquire%20about%20the%20platform"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat with AJOMI on WhatsApp"
+              title="WhatsApp"
+              id="hero-social-fab-whatsapp"
+              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-[#25D366] hover:text-white border border-[#EAE8DF] hover:border-[#25D366] shadow-xs hover:shadow-md transition-all hover:scale-105"
+            >
+              <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
+              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+                WhatsApp
+              </span>
+            </a>
+          </div>
+        </aside>
         
         {/* Background decorative elements */}
         <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80 opacity-40" aria-hidden="true">
