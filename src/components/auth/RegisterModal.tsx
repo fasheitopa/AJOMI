@@ -90,7 +90,7 @@ export function RegisterModal({
           <div>
             <div className="inline-flex items-center gap-1.5 rounded-full bg-[#fcf9ee] border border-[#D4A72C]/40 px-2.5 py-0.5 text-[10px] font-bold text-[#986d15] mb-0.5">
               <Sparkles className="h-3 w-3 text-[#D4A72C]" />
-              <span>{defaultPlan ? `Plan: ${defaultPlan}` : '14-Day Free Access'}</span>
+              <span>{defaultPlan ? `Plan: ${defaultPlan}` : '30-Day Free Access'}</span>
             </div>
             <h3 className="text-xl font-black text-[#172018] tracking-tight">
               Create Free AJOMI Account

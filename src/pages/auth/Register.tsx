@@ -116,7 +116,7 @@ export default function Register() {
           <div className="mt-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A72C]/40 bg-white/10 px-3.5 py-1 text-xs font-bold text-[#fcf9ee] backdrop-blur-xs">
               <Sparkles className="h-3.5 w-3.5 text-[#D4A72C]" />
-              <span>Modernizing Nigerian Ajo, Esusu & Thrift</span>
+              <span>Modernizing West African Ajo, Esusu & Thrift</span>
             </div>
             <h1 className="mt-3 text-2xl sm:text-3xl xl:text-4xl font-black tracking-tight text-white leading-tight">
               Replace paper passbooks with real-time financial trust.
@@ -322,11 +322,11 @@ export default function Register() {
             )}
             
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#172018]">
-              {accountType === 'TENANT_COLLECTOR' ? 'Start Your 14-Day Free Trial' : 'Create Contributor Account'}
+              {accountType === 'TENANT_COLLECTOR' ? 'Start Your 30-Day Free Trial' : 'Create Contributor Account'}
             </h2>
             <p className="mt-1.5 text-xs sm:text-sm text-[#586359] leading-relaxed">
               {accountType === 'TENANT_COLLECTOR'
-                ? 'Join hundreds of thrift collectors and cooperatives across Nigeria. No credit card required.'
+                ? 'Join hundreds of thrift collectors and cooperatives across West Africa and beyond. No credit card required.'
                 : 'Track your daily thrift contributions, verified deposits, and payouts in real-time.'}
             </p>
           </div>
@@ -554,7 +554,7 @@ export default function Register() {
                   {isSubmitting 
                     ? 'Creating Account...' 
                     : accountType === 'TENANT_COLLECTOR' 
-                      ? 'Start 14-Day Free Trial as Collector' 
+                      ? 'Start 30-Day Free Trial as Collector' 
                       : 'Complete Registration as Contributor'}
                 </span>
                 <ArrowRight className="ml-2 h-4 w-4" />

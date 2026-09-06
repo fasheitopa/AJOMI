@@ -138,6 +138,7 @@ export default function Onboarding() {
                 >
                   <option value="NGN">Nigerian Naira (₦)</option>
                   <option value="GHS">Ghanaian Cedi (GH₵)</option>
+                  <option value="XOF">West African CFA Franc (CFA)</option>
                   <option value="KES">Kenyan Shilling (KSh)</option>
                   <option value="USD">US Dollar ($)</option>
                 </select>

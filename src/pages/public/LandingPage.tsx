@@ -28,6 +28,85 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-col bg-[#FAFAF7] text-[#172018]">
+      {/* ================= Vertical Social Media Floating Panel (Fixed on scroll) ================= */}
+      <aside 
+        aria-label="Connect with AJOMI on social media"
+        className="fixed right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center"
+      >
+        <div className="flex flex-col items-center gap-2 sm:gap-2.5 p-2 sm:p-2.5 rounded-full bg-[#E2EFE5] border-2 border-[#055926]/30 shadow-2xl shadow-black/15 backdrop-blur-md">
+          <div className="flex flex-col items-center py-1 select-none">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#055926] mb-1.5 animate-pulse" />
+            <span className="text-[9px] font-black uppercase tracking-widest text-[#055926] [writing-mode:vertical-lr] rotate-180">
+              Follow Us
+            </span>
+          </div>
+
+          {/* Facebook */}
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit AJOMI on Facebook"
+            title="Facebook"
+            id="floating-social-facebook"
+            className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-2xl bg-white text-[#1877F2] hover:bg-[#1877F2] hover:text-white border border-[#c4e0cb] hover:border-[#1877F2] shadow-xs hover:shadow-md transition-all hover:scale-105"
+          >
+            <Facebook className="h-4 w-4 transition-transform group-hover:scale-110" />
+            <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+              Facebook
+            </span>
+          </a>
+
+          {/* Instagram */}
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit AJOMI on Instagram"
+            title="Instagram"
+            id="floating-social-instagram"
+            className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-2xl bg-white text-[#E4405F] hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white border border-[#c4e0cb] hover:border-pink-500 shadow-xs hover:shadow-md transition-all hover:scale-105"
+          >
+            <Instagram className="h-4 w-4 transition-transform group-hover:scale-110" />
+            <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+              Instagram
+            </span>
+          </a>
+
+          {/* X (Twitter) */}
+          <a
+            href="https://x.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow AJOMI on X"
+            title="X"
+            id="floating-social-x"
+            className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-2xl bg-white text-[#0F1419] hover:bg-black hover:text-white border border-[#c4e0cb] hover:border-black shadow-xs hover:shadow-md transition-all hover:scale-105"
+          >
+            <Twitter className="h-4 w-4 transition-transform group-hover:scale-110" />
+            <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+              X (Twitter)
+            </span>
+          </a>
+
+          {/* WhatsApp */}
+          <a
+            href="https://wa.me/2348000000000?text=Hello%20AJOMI%20Team%2C%20I%20would%20like%20to%20inquire%20about%20the%20platform"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat with AJOMI on WhatsApp"
+            title="WhatsApp"
+            id="floating-social-whatsapp"
+            className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-2xl bg-white text-[#128C7E] hover:bg-[#25D366] hover:text-white border border-[#c4e0cb] hover:border-[#25D366] shadow-xs hover:shadow-md transition-all hover:scale-105"
+          >
+            <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
+            <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
+              WhatsApp
+            </span>
+          </a>
+        </div>
+      </aside>
+
       {/* ================= Hero Section ================= */}
       <section className="relative px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28 overflow-hidden">
         <div className="mx-auto max-w-5xl text-center relative z-10">
@@ -84,82 +163,6 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* ================= Vertical Social Media FAB (Right Side of Hero) ================= */}
-        <aside 
-          aria-label="Connect with AJOMI on social media"
-          className="absolute right-2.5 sm:right-5 lg:right-7 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center"
-        >
-          <div className="flex flex-col items-center gap-2 p-1.5 sm:p-2 rounded-2xl bg-white/95 border border-[#EAE8DF] shadow-xl shadow-black/10 backdrop-blur-md">
-            <span className="text-[9px] font-black uppercase tracking-wider text-[#586359] [writing-mode:vertical-lr] rotate-180 py-1 select-none hidden lg:block">
-              Follow Us
-            </span>
-
-            {/* Facebook FAB */}
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Visit AJOMI on Facebook"
-              title="Facebook"
-              id="hero-social-fab-facebook"
-              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-[#1877F2] hover:text-white border border-[#EAE8DF] hover:border-[#1877F2] shadow-xs hover:shadow-md transition-all hover:scale-105"
-            >
-              <Facebook className="h-4 w-4 transition-transform group-hover:scale-110" />
-              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
-                Facebook
-              </span>
-            </a>
-
-            {/* Instagram FAB */}
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Visit AJOMI on Instagram"
-              title="Instagram"
-              id="hero-social-fab-instagram"
-              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white border border-[#EAE8DF] hover:border-pink-500 shadow-xs hover:shadow-md transition-all hover:scale-105"
-            >
-              <Instagram className="h-4 w-4 transition-transform group-hover:scale-110" />
-              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
-                Instagram
-              </span>
-            </a>
-
-            {/* X (Twitter) FAB */}
-            <a
-              href="https://x.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Follow AJOMI on X"
-              title="X"
-              id="hero-social-fab-x"
-              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-black hover:text-white border border-[#EAE8DF] hover:border-black shadow-xs hover:shadow-md transition-all hover:scale-105"
-            >
-              <Twitter className="h-4 w-4 transition-transform group-hover:scale-110" />
-              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
-                X (Twitter)
-              </span>
-            </a>
-
-            {/* WhatsApp FAB */}
-            <a
-              href="https://wa.me/2348000000000?text=Hello%20AJOMI%20Team%2C%20I%20would%20like%20to%20inquire%20about%20the%20platform"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chat with AJOMI on WhatsApp"
-              title="WhatsApp"
-              id="hero-social-fab-whatsapp"
-              className="group relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FAFAF7] text-[#172018] hover:bg-[#25D366] hover:text-white border border-[#EAE8DF] hover:border-[#25D366] shadow-xs hover:shadow-md transition-all hover:scale-105"
-            >
-              <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
-              <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-[#172018] px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 hidden sm:block">
-                WhatsApp
-              </span>
-            </a>
-          </div>
-        </aside>
-        
         {/* Background decorative elements */}
         <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80 opacity-40" aria-hidden="true">
           <div 

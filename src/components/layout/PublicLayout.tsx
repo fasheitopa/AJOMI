@@ -204,7 +204,7 @@ export default function PublicLayout() {
               </p>
               <div className="flex items-center gap-2 text-xs text-[#D4A72C]">
                 <Sparkles className="h-3.5 w-3.5" />
-                <span>Engineered for Nigerian & West African Microfinance</span>
+                <span>Engineered for West African Microfinance</span>
               </div>
             </div>
 
@@ -229,7 +229,7 @@ export default function PublicLayout() {
                 </li>
                 <li><span className="text-gray-400">Row Level Multi-Tenancy</span></li>
                 <li><span className="text-gray-400">Automated Audit Trails</span></li>
-                <li><Link to="/pricing" className="text-[#D4A72C] hover:underline">14-Day Free Trial</Link></li>
+                <li><Link to="/pricing" className="text-[#D4A72C] hover:underline">30-Day Free Trial</Link></li>
               </ul>
             </div>
 

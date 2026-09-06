@@ -480,7 +480,7 @@ export default function PricingPage() {
               },
               {
                 q: "Can I try AJOMI before paying?",
-                a: "Yes! Every new account includes a 14-day free trial on either Starter, Growth, or Scale with complete access to real collection tracking, customer registration, and ledger reports."
+                a: "Yes! Every new account includes a 30-day free trial on either Starter, Growth, or Scale with complete access to real collection tracking, customer registration, and ledger reports."
               },
               {
                 q: "Can contributors register directly on the platform?",
@@ -521,7 +521,7 @@ export default function PricingPage() {
                 onClick={() => handleOpenRegister()}
                 className="w-full sm:w-auto rounded-2xl bg-[#D4A72C] px-8 py-3.5 text-base font-bold text-[#172018] shadow-lg hover:bg-[#bb8d1e] transition-all active:scale-98"
               >
-                Start 14-Day Free Trial
+                Start 30-Day Free Trial
               </button>
               <button
                 type="button"
